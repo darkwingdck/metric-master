@@ -39,9 +39,12 @@ def main():
     print('HTTP/1.1 200 OK')
     print(dumps(result_logs))
 
-    # logfile = open(config.accesslog_filename, 'w')
-    # logfile.write('')
+    logfile = open(config.accesslog_filename, 'w')
+    logfile.write('')
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except Exception as e:
+        print(e)
