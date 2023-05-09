@@ -36,8 +36,10 @@ def main():
         processed_logs_file.write(line)
         processed_logline = process_logline(line)
         result_logs.append(processed_logline)
-    print('HTTP/1.1 200 OK')
-    print(dumps(result_logs))
+    result = { 'logs': result_logs }
+    print("Content-type: application/json")
+    print()
+    print(dumps(result))
 
     logfile = open(config.accesslog_filename, 'w')
     logfile.write('')

@@ -19,10 +19,10 @@ const requestsChart = new Chart(canvas, {
   }
 });
 
-setInterval(() => {
+function insertNewLogs(logs) {
   const now = new Date();
   const timestamp = now.toLocaleTimeString();
-  const numberOfRequests = Math.floor(Math.random() * 10) + 1;
+  const numberOfRequests = logs.length;
 
   requestsChart.data.labels.push(timestamp);
 
@@ -32,7 +32,19 @@ setInterval(() => {
     requestsChart.data.labels = requestsChart.data.labels.slice(1);
     data.datasets[0].data = data.datasets[0].data.slice(1);
   }
-
   requestsChart.update();
-}, 1000);
+}
+
+function mainLoop() {
+  $.ajax({
+    url: 'https://tgb.cardplata.ru/monitorscript',
+  }).done((data) => {
+    insertNewLogs(data.logs);
+    setTimeout(() => {
+      mainLoop();
+    }, 3000);
+  });
+}
+
+mainLoop();
 
