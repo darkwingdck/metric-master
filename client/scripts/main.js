@@ -35,16 +35,17 @@ function insertNewLogs(logs) {
   requestsChart.update();
 }
 
-function mainLoop() {
+function requestNewData() {
   $.ajax({
     url: 'https://tgb.cardplata.ru/monitorscript',
   }).done((data) => {
-    insertNewLogs(data.logs);
-    setTimeout(() => {
-      mainLoop();
-    }, 3000);
+    if (!!data.logs) {
+      insertNewLogs(data.logs);
+    }
   });
 }
+
+requestNewData();
 
 mainLoop();
 
