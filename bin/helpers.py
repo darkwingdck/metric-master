@@ -1,5 +1,6 @@
 import arrow
 import datetime as dt
+import sys
 
 
 def datetime_from_log(log: str):
@@ -17,3 +18,13 @@ def datetime_from_log(log: str):
   seconds = int(time_string.split(':')[2])
   time = dt.time(hours, minutes, seconds)
   return dt.datetime.combine(date, time)
+
+
+def log(data):
+  original_stdout = sys.stdout
+  with open('data_log.txt', 'a') as f:
+    sys.stdout = f
+    print('\n')
+    print(dt.datetime.now().strftime("%m.%d.%Y, %H:%M:%S"))
+    print(data)
+    sys.stdout = original_stdout

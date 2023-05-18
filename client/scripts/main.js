@@ -22,16 +22,16 @@ const requestsChart = new Chart(canvas, {
 function insertNewLogs(logs) {
   const now = new Date();
   const timestamp = now.toLocaleTimeString();
-  const numberOfRequests = logs.length;
+  let numberOfRequests = 0;
+  logs.forEach((interval) => {
+    requestsChart.data.labels.push(interval[0].timestamp);
+    const numberOfRequestsInInterval = interval.length;
+    numberOfRequests += numberOfRequestsInInterval;
+    data.datasets[0].data.push(numberOfRequestsInInterval);
+  });
+  alert(numberOfRequests);
 
-  requestsChart.data.labels.push(timestamp);
 
-  data.datasets[0].data.push(numberOfRequests);
-
-  if (data.labels.length > 20) {
-    requestsChart.data.labels = requestsChart.data.labels.slice(1);
-    data.datasets[0].data = data.datasets[0].data.slice(1);
-  }
   requestsChart.update();
 }
 

@@ -47,31 +47,35 @@ def new_logs_appeared(filename: str):
   first_datetime = helpers.datetime_from_log(first_line)
   last_datetime = helpers.datetime_from_log(last_line)
   diff = last_datetime - first_datetime
-  return diff.seconds > config.cooldown_in_seconds
+  return diff.seconds > config.cooldown_time_in_seconds
 
 
 def main():
-  if not new_logs_appeared(config.accesslog_filename):
-    return '', 200
-
   result_logs = []
-  logfile = open(config.accesslog_filename, 'r')
-  processed_logs_file = open(config.processed_logs_filename, 'a')
-
-  loglines = logfile.readlines()
-  processed_logs_file.write('\n')
-  for line in loglines:
-    processed_logs_file.write(line)
-    processed_logline = process_logline(line)
-    result_logs.append(processed_logline)
+  logfile = open(config.accesslog_filename)
+  
+  current_interval_array = []
+  current_interval_end = dt.datetime.now()
+  for i, log in enumerate(reversed(list(logfile))):
+    time = deserialize_line(log)['timestamp']
+    current_log_datetime = helpers.datetime_from_log(log)
+    if len(current_interval_array) == 0:
+      current_interval_array.append(process_logline(log))
+      current_interval_end = current_log_datetime
+    elif i != 0 and (current_interval_end - current_log_datetime).seconds > config.cooldown_time_in_seconds:
+      print(time)
+      current_interval_array.append(process_logline(log))
+      result_logs.append(current_interval_array)
+      current_interval_array = []
+    else:
+      current_interval_array.append(process_logline(log))
+      if len(result_logs) > 10:
+        break
 
   result = {'logs': result_logs}
   print("Content-type: application/json")
   print()
   print(dumps(result))
-
-  logfile = open(config.accesslog_filename, 'w')
-  logfile.write('')
 
 
 if __name__ == '__main__':
