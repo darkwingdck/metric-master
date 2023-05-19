@@ -29,7 +29,6 @@ function insertNewLogs(logs) {
     numberOfRequests += numberOfRequestsInInterval;
     data.datasets[0].data.push(numberOfRequestsInInterval);
   });
-  alert(numberOfRequests);
 
 
   requestsChart.update();
@@ -46,6 +45,4 @@ function requestNewData() {
 }
 
 requestNewData();
-
-mainLoop();
 

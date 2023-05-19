@@ -17,7 +17,7 @@ def deserialize_line(log):
       'status': splitted_log[4],
       'path': splitted_log[5],
       'body_length': splitted_log[6],
-      'timestamp': splitted_log[7].replace('[', ''),
+      'timestamp': helpers.datetime_from_log(log).strftime("%H:%M:%S"),
       'time_used_in_ms': splitted_log[9].replace('\n', '')
   }
 
@@ -57,22 +57,20 @@ def main():
   current_interval_array = []
   current_interval_end = dt.datetime.now()
   for i, log in enumerate(reversed(list(logfile))):
-    time = deserialize_line(log)['timestamp']
     current_log_datetime = helpers.datetime_from_log(log)
     if len(current_interval_array) == 0:
       current_interval_array.append(process_logline(log))
       current_interval_end = current_log_datetime
     elif i != 0 and (current_interval_end - current_log_datetime).seconds > config.cooldown_time_in_seconds:
-      print(time)
       current_interval_array.append(process_logline(log))
-      result_logs.append(current_interval_array)
+      result_logs.append(list(reversed(current_interval_array)))
       current_interval_array = []
     else:
       current_interval_array.append(process_logline(log))
       if len(result_logs) > 10:
         break
 
-  result = {'logs': result_logs}
+  result = {'logs': list(reversed(result_logs))}
   print("Content-type: application/json")
   print()
   print(dumps(result))
