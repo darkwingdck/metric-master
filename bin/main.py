@@ -33,7 +33,6 @@ def get_log_metrics_from_file(log_filename):
   f.close()
   prompt.example_log(examle_log)
   integer_log_params = deserialize_log_in_integers(examle_log)
-  integer_log_params[-1] = prompt.number_of_logs()
   return integer_log_params
 
 
@@ -63,19 +62,53 @@ def get_name(type):
   return name
 
 
-def main():
+def get_show_number_of_logs():
+  prompt.show_number_of_logs()
+  show_number_of_logs = input('--> ')
+  if show_number_of_logs.startswith('y'):
+    return True
+  return False
+
+
+def get_cooldown_time():
+  prompt.enter_cooldown_time()
+  cooldown_time = input('--> ')
+  return cooldown_time
+
+
+def add_new_graph():
   log_filename = get_log_filename()
-  # '/home/darkwingdck/Study/diploma/lighttpd-monitoring/debug_logs.log
+  # /home/darkwingdck/Study/diploma/lighttpd-monitoring/debug_logs.log
   (index_in_log, metric) = get_metric(log_filename)
   metric_name = get_name('metric')
   graph_name = get_name('graph')
+  show_number_of_logs = get_show_number_of_logs()
+  cooldown_time = get_cooldown_time()
   prompt.metric_added()
   data = {
       'metric_index_in_log': index_in_log,
       'metric_name': metric_name,
-      'graph_name': graph_name
+      'graph_name': graph_name,
+      'show_number_of_logs': show_number_of_logs,
+      'cooldown_time': cooldown_time
   }
-  return data
+  print(data)
+
+
+def main_menu():
+  prompt.hello()
+  options = [
+      'Add a new graph',
+      'Edit graph'
+  ]
+  prompt.main_menu(options)
+  mode = input('--> ')
+  if mode == '1':
+    add_new_graph()
+
+
+def main():
+  main_menu()
 
 
 if __name__ == '__main__':

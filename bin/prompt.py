@@ -6,7 +6,7 @@ def there_is_no_such_file(filename):
 
 
 def enter_logfile_path():
-  print(colored('Enter log file path', 'light_cyan'))
+  print(colored('\nEnter log file path', 'light_cyan'))
 
 
 def example_log(log):
@@ -18,12 +18,16 @@ def avaliable_metrics():
   print(colored('Avaliable metrics:', 'light_yellow'))
 
 
-def number_of_logs():
-  return 'Number of logs in an amount of time'
+def show_number_of_logs():
+  print(colored('\nAdd number of logs on graph? (y/n)', 'light_cyan'))
+
+
+def enter_cooldown_time():
+  print(colored('\nEnter cooldown time in min', 'light_cyan'))
 
 
 def choose_metric():
-  print(colored(f'\nChoose a metric to track', 'light_cyan'))
+  print(colored('\nChoose a metric to track', 'light_cyan'))
 
 
 def choose_name(type):
@@ -32,3 +36,12 @@ def choose_name(type):
 
 def metric_added():
   print(colored('\nMetric added successfully!', 'light_green'))
+
+
+def hello():
+  print(colored('Hello! This is logger. Choose a mode', 'light_cyan'))
+
+
+def main_menu(options):
+  for index, option in enumerate(options):
+    print(colored(f'{index + 1}. ', 'light_cyan') + option)
