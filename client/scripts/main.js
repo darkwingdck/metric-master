@@ -21,10 +21,9 @@ const requestsChart = new Chart(canvas, {
 
 function insertNewLogs(logs) {
   const now = new Date();
-  const timestamp = now.toLocaleTimeString();
   let numberOfRequests = 0;
   logs.forEach((interval) => {
-    requestsChart.data.labels.push(interval[0].timestamp);
+    requestsChart.data.labels.push(interval.at(-1).timestamp);
     const numberOfRequestsInInterval = interval.length;
     numberOfRequests += numberOfRequestsInInterval;
     data.datasets[0].data.push(numberOfRequestsInInterval);
