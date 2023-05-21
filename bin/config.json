@@ -1,0 +1,16 @@
+{
+  "graphs": [
+    {
+      "name": "requests",
+      "filename": "/home/darkwingdck/Study/diploma/lighttpd-monitoring/debug_logs.log",
+      "show_number_of_logs": true,
+      "cooldown_time": "40",
+      "metrics": [
+        {
+          "name": "time_in_ms",
+          "index_in_log": 9
+        }
+      ]
+    }
+  ]
+}
