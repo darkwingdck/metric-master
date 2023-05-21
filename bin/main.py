@@ -93,13 +93,12 @@ def get_metric_data(log_filename):
 
 
 def get_metrics(log_filename):
-  metric = get_metric_data(log_filename)
-  metrics = [metric]
-  prompt.add_another_metric()
+  metrics = []
+  prompt.add_metric()
   while input('--> ').startswith('y'):
     metric = get_metric_data(log_filename)
     metrics.append(metric)
-    prompt.add_another_metric()
+    prompt.add_metric()
   return metrics
 
 

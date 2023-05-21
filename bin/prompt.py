@@ -13,8 +13,8 @@ def lets_add_metrics():
   print(colored('\nLet\'s add metrics', 'light_green'))
 
 
-def add_another_metric():
-  print(colored('\nAdd another metric? (y/n)', 'light_cyan'))
+def add_metric():
+  print(colored('\nAdd metric? (y/n)', 'light_cyan'))
 
 
 def example_log(log):
