@@ -1,4 +1,6 @@
-# lighttpd-monitoring
+# metric-master
+
+![logo](client/images/metricmaster.jpg)
 
 ## A simple logger for lighttpd server
 
