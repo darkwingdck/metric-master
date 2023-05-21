@@ -28,28 +28,6 @@ def process_logline(line):
   return deserialize_line(line)
 
 
-def read_last_and_first_line(filename: str):
-  first_line = ''
-  last_line = ''
-  index = 0
-  with open(filename) as f:
-    for line in f:
-      if line != '\n':
-        if index == 0:
-          first_line = line
-        index += 1
-        last_line = line
-  return [first_line, last_line]
-
-
-def new_logs_appeared(filename: str):
-  [first_line, last_line] = read_last_and_first_line(filename)
-  first_datetime = helpers.datetime_from_log(first_line)
-  last_datetime = helpers.datetime_from_log(last_line)
-  diff = last_datetime - first_datetime
-  return diff.seconds > config.cooldown_time_in_seconds
-
-
 def main():
   result_logs = []
   logfile = open(config.accesslog_filename)

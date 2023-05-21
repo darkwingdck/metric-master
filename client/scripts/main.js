@@ -1,47 +1,44 @@
 const canvas = $('.monitoring__canvas');
-const labels = [];
-let data = {
-  labels: [],
-  datasets: [{
-    label: 'Количество запросов',
-    data: [],
-    fill: true,
-    backgroundColor: 'rgb(75, 192, 192, 0.1)',
-    borderColor: 'rgb(75, 192, 192)',
-  }],
-};
 
-const requestsChart = new Chart(canvas, {
-  type: 'line',
-  data,
-  options: {
-    animation: false,
-  }
-});
-
-function insertNewLogs(logs) {
-  const now = new Date();
-  let numberOfRequests = 0;
-  logs.forEach((interval) => {
-    requestsChart.data.labels.push(interval.at(-1).timestamp);
-    const numberOfRequestsInInterval = interval.length;
-    numberOfRequests += numberOfRequestsInInterval;
-    data.datasets[0].data.push(numberOfRequestsInInterval);
+function makeChart(graph) {
+  const chart = new Chart(canvas, {
+    type: 'line',
+    data: {
+      labels: graph.labels,
+      datasets: [],
+    },
+    options: {
+      animation: false,
+    },
   });
-
-
-  requestsChart.update();
+  graph.metrics.forEach((metric) => {
+    chart.data.datasets.push({
+      label: metric.name,
+      data: metric.data,
+      fill: true,
+      backgroundColor: 'rgb(75, 192, 192, 0.1)',
+      borderColor: 'rgb(75, 192, 192)',
+    });
+  });
+  chart.update();
 }
 
-function requestNewData() {
+function insertDataInGraphs(graphs) {
+  graphs.forEach((graph) => {
+    makeChart(graph);
+  });
+}
+
+function requestData() {
   $.ajax({
-    url: 'https://tgb.cardplata.ru/monitorscript',
+    url: 'https://tgb.cardplata.ru/metric-master',
   }).done((data) => {
-    if (!!data.logs) {
-      insertNewLogs(data.logs);
+    if (!!data.graphs) {
+      data.graphs.forEach((graph) => {
+        makeChart(graph);
+      });
     }
   });
 }
 
-requestNewData();
-
+requestData();

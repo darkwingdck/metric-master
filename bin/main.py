@@ -76,6 +76,10 @@ def get_cooldown_time():
   return cooldown_time
 
 
+def add_data_to_config():
+  pass
+
+
 def add_new_graph():
   log_filename = get_log_filename()
   # /home/darkwingdck/Study/diploma/lighttpd-monitoring/debug_logs.log
@@ -86,13 +90,15 @@ def add_new_graph():
   cooldown_time = get_cooldown_time()
   prompt.metric_added()
   data = {
+      'log_filename': log_filename,
       'metric_index_in_log': index_in_log,
       'metric_name': metric_name,
       'graph_name': graph_name,
       'show_number_of_logs': show_number_of_logs,
       'cooldown_time': cooldown_time
   }
-  print(data)
+  add_data_to_config()
+  
 
 
 def main_menu():

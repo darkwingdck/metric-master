@@ -4,7 +4,7 @@ import sys
 
 
 def datetime_from_log(log: str):
-  datetime_string = log.split(' ')[7].replace('[', '')
+  datetime_string = log.replace('[', '')
   date_string = datetime_string.split(':')[0]
   time_string = datetime_string.split(f'{dt.date.today().year}:')[1]
 
