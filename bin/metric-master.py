@@ -6,26 +6,10 @@ from json import dumps, load
 import datetime as dt
 
 
-def deserialize_line(log):
-  # TODO: custom lighttpd configs require custom deserialization
-  splitted_log = log.split(' ')
-  return splitted_log
-  # return {
-  #     'user_ip': splitted_log[0],
-  #     'host': splitted_log[1],
-  #     'method': splitted_log[3],
-  #     'status': splitted_log[4],
-  #     'path': splitted_log[5],
-  #     'body_length': splitted_log[6],
-  #     'timestamp': helpers.datetime_from_log(log).strftime("%H:%M:%S"),
-  #     'time_used_in_ms': splitted_log[9].replace('\n', '')
-  # }
-
-
 def process_logline(line):
   if line == '\n':
     return
-  return deserialize_line(line)
+  return line.split(' ')
 
 
 def get_logs(filename, cooldown_time):
