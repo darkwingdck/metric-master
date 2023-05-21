@@ -1,18 +1,22 @@
 #!/usr/bin/python3
 
 from os import path
+from json import dumps
 from termcolor import colored
 import prompt
 
 
-def get_log_filename():
+def ask_for_filename():
   prompt.enter_logfile_path()
-  logfile = input('--> ')
-  if not path.exists(logfile):
-    prompt.there_is_no_such_file(logfile)
-    get_log_filename()
-  else:
-    return logfile
+  filename = input('--> ')
+  return filename
+
+
+def get_log_filename():
+  filename = ''
+  while not path.exists(filename) or not path.isfile(filename):
+    filename = ask_for_filename()
+  return filename
 
 
 def deserialize_log_in_integers(log):
@@ -36,7 +40,7 @@ def get_log_metrics_from_file(log_filename):
   return integer_log_params
 
 
-def get_metric(log_filename):
+def get_metric_index_in_log(log_filename):
   metrics = get_log_metrics_from_file(log_filename)
   metric_keys = {}
   prompt.avaliable_metrics()
@@ -46,8 +50,7 @@ def get_metric(log_filename):
     print(f' {metrics[metric_key]}')
   prompt.choose_metric()
   chosen_metric_index = metric_keys[int(input('--> ')) - 1]
-  chosen_metric = metrics[chosen_metric_index]
-  return (chosen_metric_index, chosen_metric)
+  return chosen_metric_index
 
 
 def get_metric_name():
@@ -65,9 +68,7 @@ def get_name(type):
 def get_show_number_of_logs():
   prompt.show_number_of_logs()
   show_number_of_logs = input('--> ')
-  if show_number_of_logs.startswith('y'):
-    return True
-  return False
+  return show_number_of_logs.startswith('y')
 
 
 def get_cooldown_time():
@@ -76,29 +77,46 @@ def get_cooldown_time():
   return cooldown_time
 
 
-def add_data_to_config():
-  pass
+def add_data_to_config(data):
+  print(dumps(data))
+
+
+def get_metric_data(log_filename):
+  metric_index_in_log = get_metric_index_in_log(log_filename)
+  metric_name = get_name('metric')
+  return {'name': metric_name, 'index_in_log': metric_index_in_log}
+
+
+def get_metrics(log_filename):
+  metric = get_metric_data(log_filename)
+  metrics = [metric]
+  prompt.add_another_metric()
+  while input('--> ').startswith('y'):
+    metric = get_metric_data(log_filename)
+    metrics.append(metric)
+    prompt.add_another_metric()
+  return metrics
 
 
 def add_new_graph():
+  prompt.lets_add_graph()
   log_filename = get_log_filename()
-  # /home/darkwingdck/Study/diploma/lighttpd-monitoring/debug_logs.log
-  (index_in_log, metric) = get_metric(log_filename)
-  metric_name = get_name('metric')
   graph_name = get_name('graph')
   show_number_of_logs = get_show_number_of_logs()
   cooldown_time = get_cooldown_time()
-  prompt.metric_added()
+
+  prompt.lets_add_metrics()
+  graph_metrics = get_metrics(log_filename)
+
   data = {
-      'log_filename': log_filename,
-      'metric_index_in_log': index_in_log,
-      'metric_name': metric_name,
-      'graph_name': graph_name,
+      'name': graph_name,
+      'filename': log_filename,
       'show_number_of_logs': show_number_of_logs,
-      'cooldown_time': cooldown_time
+      'cooldown_time': cooldown_time,
+      'metrics': graph_metrics
   }
-  add_data_to_config()
-  
+  prompt.graph_added()
+  add_data_to_config(data)
 
 
 def main_menu():
@@ -118,7 +136,4 @@ def main():
 
 
 if __name__ == '__main__':
-  try:
-    main()
-  except Exception as e:
-    print(e)
+  main()

@@ -1,12 +1,20 @@
 from termcolor import colored
 
 
-def there_is_no_such_file(filename):
-  print(colored('There\'s no file ', 'red') + f'"{filename}"')
-
-
 def enter_logfile_path():
   print(colored('\nEnter log file path', 'light_cyan'))
+
+
+def lets_add_graph():
+  print(colored('\nLet\'s add a graph', 'light_green'))
+
+
+def lets_add_metrics():
+  print(colored('\nLet\'s add metrics', 'light_green'))
+
+
+def add_another_metric():
+  print(colored('\nAdd another metric? (y/n)', 'light_cyan'))
 
 
 def example_log(log):
@@ -34,12 +42,19 @@ def choose_name(type):
   print(colored(f'\nChoose a name for a {type}', 'light_cyan'))
 
 
-def metric_added():
-  print(colored('\nMetric added successfully!', 'light_green'))
+def graph_added():
+  print(colored('\nGraph added successfully!', 'light_green'))
 
 
 def hello():
-  print(colored('Hello! This is logger. Choose a mode', 'light_cyan'))
+  print(colored('''
+  __  __      _        _      __  __           _            
+ |  \/  | ___| |_ _ __(_) ___|  \/  | __ _ ___| |_ ___ _ __ 
+ | |\/| |/ _ \ __| '__| |/ __| |\/| |/ _` / __| __/ _ \ '__|
+ | |  | |  __/ |_| |  | | (__| |  | | (_| \__ \ ||  __/ |   
+ |_|  |_|\___|\__|_|  |_|\___|_|  |_|\__,_|___/\__\___|_|   
+                                                            
+  ''', 'light_cyan'))
 
 
 def main_menu(options):
