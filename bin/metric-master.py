@@ -2,7 +2,7 @@
 import config
 import helpers
 
-from json import dumps
+from json import dumps, load
 import datetime as dt
 
 
@@ -28,7 +28,7 @@ def process_logline(line):
   return deserialize_line(line)
 
 
-def get_logs(filename):
+def get_logs(filename, cooldown_time):
   logs = []
   logfile = open(filename)
 
@@ -39,7 +39,7 @@ def get_logs(filename):
     if len(current_interval_array) == 0:
       current_interval_array.append(process_logline(log))
       current_interval_end = current_log_datetime
-    elif i != 0 and (current_interval_end - current_log_datetime).seconds > config.cooldown_time_in_seconds:
+    elif i != 0 and (current_interval_end - current_log_datetime).seconds > cooldown_time * 60:
       current_interval_array.append(process_logline(log))
       logs.append(list(reversed(current_interval_array)))
       current_interval_array = []
@@ -78,19 +78,28 @@ def make_graph_from_config(graph_config):
   graph = {}
   graph['name'] = graph_config['name']
   graph['metrics'] = []
-  logs = get_logs(graph_config['filename'])
+  logs = get_logs(graph_config['filename'], int(graph_config['cooldown_time']))
   graph['labels'] = get_graph_labels(logs)
+
   for metric_config in graph_config['metrics']:
     metric = {}
     metric['name'] = metric_config['name']
     metric['data'] = get_metric_data_from_logs(logs, metric_config['index_in_log'])
     graph['metrics'].append(metric)
+  if graph_config['show_number_of_logs']:
+    number_of_logs_metric = {}
+    number_of_logs_metric['name'] = 'Number of logs'
+    number_of_logs_metric['data'] = get_number_of_logs_array(logs)
+    graph['metrics'].append(number_of_logs_metric)
   return graph
 
 
 def main():
   graphs = []
-  for graph_config in config.graphs_config:
+  f = open(config.GRAPHS_FILENAME)
+  graphs_config = load(f)['graphs']
+  f.close()
+  for graph_config in graphs_config:
     graphs.append(make_graph_from_config(graph_config))
   print('Content-type: application/json\n')
   print(dumps({ 'graphs': graphs }))

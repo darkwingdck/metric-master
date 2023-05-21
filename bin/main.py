@@ -3,10 +3,8 @@
 from os import path
 from json import dumps, load
 from termcolor import colored
+from config import GRAPHS_FILENAME
 import prompt
-
-
-CONFIG_FILENAME = '/home/darkwingdck/Study/diploma/lighttpd-monitoring/bin/config.json'
 
 
 def ask_for_filename():
@@ -81,10 +79,10 @@ def get_cooldown_time():
 
 
 def add_data_to_config(data):
-  f = open(CONFIG_FILENAME)
+  f = open(GRAPHS_FILENAME)
   current_graphs_config = load(f)
   current_graphs_config['graphs'].append(data)
-  with open(CONFIG_FILENAME, 'w') as f:
+  with open(GRAPHS_FILENAME, 'w') as f:
     f.write(dumps(current_graphs_config, indent=2))
 
 
