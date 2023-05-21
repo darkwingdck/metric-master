@@ -1,7 +1,11 @@
-const canvas = $('.monitoring__canvas');
+const CANVAS_CLASS = 'canvas-class';
+const CHART_HTML = '<div class="chart"><h1>name</h1><canvas class="canvas-class" width="400" height="100"></canvas></div>';
 
 function makeChart(graph) {
-  const chart = new Chart(canvas, {
+  const content = $('.content');
+  const newCanvasClass = CANVAS_CLASS + Date.now();
+  content.append(CHART_HTML.replace('name', graph.name).replace(CANVAS_CLASS, newCanvasClass));
+  const chart = new Chart($(`.${newCanvasClass}`), {
     type: 'line',
     data: {
       labels: graph.labels,
@@ -16,17 +20,9 @@ function makeChart(graph) {
       label: metric.name,
       data: metric.data,
       fill: true,
-      backgroundColor: 'rgb(75, 192, 192, 0.1)',
-      borderColor: 'rgb(75, 192, 192)',
     });
   });
   chart.update();
-}
-
-function insertDataInGraphs(graphs) {
-  graphs.forEach((graph) => {
-    makeChart(graph);
-  });
 }
 
 function requestData() {
