@@ -1,1 +1,0 @@
-GRAPHS_FILENAME = '/home/darkwingdck/Study/diploma/metric-master/bin/graphs.json'
