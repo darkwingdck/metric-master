@@ -91,6 +91,8 @@ def get_metric_data(log_filename):
 
 def get_metrics(log_filename):
   metrics = []
+  metric = get_metric_data(log_filename)
+  metrics.append(metric)
   prompt.add_metric()
   while input('--> ').startswith('y'):
     metric = get_metric_data(log_filename)
