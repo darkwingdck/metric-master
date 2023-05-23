@@ -1,6 +1,7 @@
 # metric-master
-
-![logo](client/images/metricmaster.png)
+<p align="center">
+  <img src="client/images/metricmaster.png" />
+</p>
 
 ## A simple logger for lighttpd server
 
