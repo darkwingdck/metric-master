@@ -1,1 +1,1 @@
-GRAPHS_FILENAME = '/home/darkwingdck/Study/diploma/lighttpd-monitoring/bin/graphs.json'
+GRAPHS_FILENAME = '/home/darkwingdck/Study/diploma/metric-master/bin/graphs.json'

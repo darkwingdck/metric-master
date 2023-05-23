@@ -54,6 +54,7 @@ def hello():
  | |  | |  __/ |_| |  | | (__| |  | | (_| \__ \ ||  __/ |   
  |_|  |_|\___|\__|_|  |_|\___|_|  |_|\__,_|___/\__\___|_|   
                                                             
+ https://github.com/darkwingdck/metric-master
   ''', 'light_cyan'))
 
 
