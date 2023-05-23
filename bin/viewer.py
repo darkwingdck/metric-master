@@ -37,17 +37,13 @@ def get_logs(filename, cooldown_time):
 def get_metric_data_from_logs(logs, metric_index_in_log):
   data = []
   for log_interval in logs:
-    s = 0
-    for log in log_interval:
-      s += int(log[metric_index_in_log])
-    data.append(round(s / len(log_interval)))
-  return data
-
-
-def get_number_of_logs_array(logs):
-  data = []
-  for log_interval in logs:
-    data.append(len(log_interval))
+    if metric_index_in_log == -1:
+      data.append(len(log_interval))
+    else:
+      s = 0
+      for log in log_interval:
+        s += int(log[metric_index_in_log])
+      data.append(round(s / len(log_interval)))
   return data
 
 
@@ -70,11 +66,6 @@ def make_graph_from_config(graph_config):
     metric['name'] = metric_config['name']
     metric['data'] = get_metric_data_from_logs(logs, metric_config['index_in_log'])
     graph['metrics'].append(metric)
-  if graph_config['show_number_of_logs']:
-    number_of_logs_metric = {}
-    number_of_logs_metric['name'] = 'Number of logs'
-    number_of_logs_metric['data'] = get_number_of_logs_array(logs)
-    graph['metrics'].append(number_of_logs_metric)
   return graph
 
 

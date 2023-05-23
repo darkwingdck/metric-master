@@ -47,10 +47,11 @@ def get_metric_index_in_log(log_filename):
   prompt.avaliable_metrics()
   for index, metric_key in enumerate(metrics.keys()):
     metric_keys[index] = metric_key
-    print(colored(f'{index + 1}.', 'light_cyan'), end="")
-    print(f' {metrics[metric_key]}')
+    print(colored(f'{index + 1}.', 'light_cyan') + f' {metrics[metric_key]}')
+  print(colored(f'{len(list(metrics.keys())) + 1}. ', 'light_cyan')  + 'Number of logs')
   prompt.choose_metric()
-  chosen_metric_index = metric_keys[int(input('--> ')) - 1]
+  number = int(input('--> ')) - 1
+  chosen_metric_index = -1 if number == len(list(metrics.keys())) else metric_keys[number]
   return chosen_metric_index
 
 
@@ -64,12 +65,6 @@ def get_name(type):
   prompt.choose_name(type)
   name = input('--> ')
   return name
-
-
-def get_show_number_of_logs():
-  prompt.show_number_of_logs()
-  show_number_of_logs = input('--> ')
-  return show_number_of_logs.startswith('y')
 
 
 def get_cooldown_time():
@@ -106,7 +101,6 @@ def add_new_graph():
   prompt.lets_add_graph()
   log_filename = get_log_filename()
   graph_name = get_name('graph')
-  show_number_of_logs = get_show_number_of_logs()
   cooldown_time = get_cooldown_time()
 
   prompt.lets_add_metrics()
@@ -115,7 +109,6 @@ def add_new_graph():
   data = {
       'name': graph_name,
       'filename': log_filename,
-      'show_number_of_logs': show_number_of_logs,
       'cooldown_time': cooldown_time,
       'metrics': graph_metrics
   }
