@@ -48,10 +48,12 @@ def get_metric_index_in_log(log_filename):
   for index, metric_key in enumerate(metrics.keys()):
     metric_keys[index] = metric_key
     print(colored(f'{index + 1}.', 'light_cyan') + f' {metrics[metric_key]}')
-  print(colored(f'{len(list(metrics.keys())) + 1}. ', 'light_cyan')  + 'Number of logs')
+  print(colored(f'{len(list(metrics.keys())) + 1}. ',
+        'light_cyan') + 'Number of logs')
   prompt.choose_metric()
   number = int(input('--> ')) - 1
-  chosen_metric_index = -1 if number == len(list(metrics.keys())) else metric_keys[number]
+  chosen_metric_index = - \
+      1 if number == len(list(metrics.keys())) else metric_keys[number]
   return chosen_metric_index
 
 

@@ -26,10 +26,6 @@ def avaliable_metrics():
   print(colored('Avaliable metrics:', 'light_yellow'))
 
 
-def show_number_of_logs():
-  print(colored('\nAdd number of logs on graph? (y/n)', 'light_cyan'))
-
-
 def enter_cooldown_time():
   print(colored('\nEnter cooldown time in min', 'light_cyan'))
 
